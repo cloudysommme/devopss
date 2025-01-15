@@ -1,0 +1,11 @@
+Source: devopss
+Section: utils
+Priority: optional
+Maintainer: Nazar <senyshyn.nazar@gmail.com>
+Build-Depends: debhelper (>= 11), g++
+Standards-Version: 4.5.0
+
+Package: devopss
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: DevOps C++ program
