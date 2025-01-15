@@ -3,7 +3,10 @@
 
 class HyperbolicTangent {
 public:
-    double FuncA(double x);
+    // Calculates the sum of the first n elements of the infinite series for hyperbolic tangent
+    // @param x: Input value for the hyperbolic tangent calculation
+    // @param n: Number of terms in the series to sum
+    double FuncA(double x, int n);
 };
 
 #endif
