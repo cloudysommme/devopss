@@ -1,14 +1,14 @@
-name: C++ Build and Tarball Distribution
+name: Build and Test C++ Project
 
 on:
   push:
     branches:
       - main
-      - branchAutomake
+      - branchAutoTest
   pull_request:
     branches:
       - main
-      - branchAutomake
+      - branchAutoTest
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up C++ environment
-        run: sudo apt-get install g++ make automake autoconf dephelper
+        run: sudo apt-get install g++ make automake autoconf debhelper libgtest-dev
 
       - name: Build the project using automake
         run: |
@@ -26,12 +26,6 @@ jobs:
           ./configure
           make
 
-       - name: Create Debian package
+      - name: Run unit tests
         run: |
-          debuild -us -uc
-
-      - name: Upload .deb package as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: devopss-deb-package
-          path: ../*.deb
+          make check
