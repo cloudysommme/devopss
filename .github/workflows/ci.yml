@@ -1,0 +1,27 @@
+name: C++ Build
+
+on:
+  push:
+    branches:
+      - main
+      - branchMake
+  pull_request:
+    branches:
+      - main
+      - branchMake
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up C++ environment
+        run: sudo apt-get install g++ make
+
+      - name: Build the project
+        run: make
+
+      - name: Run tests (optional)
+        run: ./main
