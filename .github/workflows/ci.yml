@@ -1,25 +1,21 @@
-name: Makefile CI
+name: Build and Test
 
 on:
   push:
-    branches: ["branchMake"]
+    branches: [branchMake]
   pull_request:
-    branches: ["branchMake"]
+    branches: [branchMake]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-
     steps:
-      - name: Chekout code
-        uses: actions/checkout@v2
-
-      - name: Install build tools
-        run: sudo apt-get install -y build-essential
-
-      - name: Build
-        run: make
-
-      - name: Run the executable
-        run: ./program
+      - uses: actions/checkout@v2
+      - name: Set up C++ Build Environment
+        run: sudo apt update && sudo apt install -y g++
+      - name: Build with Makefile
+        run: |
+          make clean
+          make
+      - name: Run Tests
+        run: ./func

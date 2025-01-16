@@ -3596,7 +3596,6 @@ else
 fi
 
 
-AC_PROG_RM
 ac_config_files="$ac_config_files Makefile"
 
 cat >confcache <<\_ACEOF

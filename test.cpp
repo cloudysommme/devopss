@@ -1,8 +1,13 @@
-#include <gtest/gtest.h>
+#include <iostream>
+#include <cassert>
 #include "func.h"
 
-TEST(HyperbolicTangentTest, TestFuncA) {
+int main() {
     HyperbolicTangent ht;
-    double result = ht.FuncA(1.0, 3);
-    EXPECT_NEAR(result, 1.0, 0.01);
+    assert(ht.FuncA(0.0, 3) == 0.0);
+    assert(ht.FuncA(0.5, 3) > 0.46 && ht.FuncA(0.5, 3) < 0.47);
+    assert(ht.FuncA(-0.5, 3) > -0.47 && ht.FuncA(-0.5, 3) < -0.46);
+    std::cout << "All tests passed!" << std::endl;
+    return 0;
 }
+

@@ -26,3 +26,6 @@ debug:
 	@echo "${PACKAGE}"
 	@echo "${VERSION}"
 	@echo "${PACKAGE_BUGREPORT}"
+
+check: test
+	@./test
