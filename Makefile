@@ -1,16 +1,17 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall
-SOURCES = main.cpp func.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
-EXEC = main
+CXXFLAGS = -Wall -std=c++11
+TARGET = func
 
-all: $(EXEC)
+all: $(TARGET)
 
-$(EXEC): $(OBJECTS)
-    $(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJECTS)
+$(TARGET): main.o func.o
+	$(CXX) $(CXXFLAGS) -o $(TARGET) main.o func.o
 
-.cpp.o:
-    $(CXX) $(CXXFLAGS) -c $<
+main.o: main.cpp func.h
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+funcA.o: funcA.cpp funcA.h
+	$(CXX) $(CXXFLAGS) -c func.cpp
 
 clean:
-    rm -f $(OBJECTS) $(EXEC)
+	rm -f *.o $(TARGET)

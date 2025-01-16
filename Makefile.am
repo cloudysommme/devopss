@@ -1,5 +1,3 @@
 AUTOMAKE_OPTIONS = foreign
-
-bin_PROGRAMS = main
-main_SOURCES = main.cpp func.cpp
-
+bin_PROGRAMS = myprogram
+myprogram_SOURCES = main.cpp func.cpp func.h

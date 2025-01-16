@@ -1,37 +1,21 @@
-name: C++ Build and Tarball Distribution
+name: Build and Test
 
 on:
   push:
-    branches:
-      - main
-      - branchAutomake
+    branches: [branchMake]
   pull_request:
-    branches:
-      - main
-      - branchAutomake
+    branches: [branchMake]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up C++ environment
-        run: sudo apt-get install g++ make automake autoconf
-
-      - name: Build the project using automake
+      - uses: actions/checkout@v2
+      - name: Set up C++ Build Environment
+        run: sudo apt update && sudo apt install -y g++
+      - name: Build with Makefile
         run: |
-          ./autogen.sh
-          ./configure
+          make clean
           make
-
-      - name: Create tarball distribution
-        run: make dist
-
-      - name: Upload tarball as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: project-tarball
-          path: *.tar.gz
-
+      - name: Run Tests
+        run: ./func
