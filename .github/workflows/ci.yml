@@ -2,22 +2,23 @@ name: Makefile CI
 
 on:
   push:
-    branches: [ "branchMake" ]
+    branches: ["branchMake"]
   pull_request:
-    branches: [ "branchMake " ]
+    branches: ["branchMake"]
 
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Chekout code
-          uses: actions/checkout@v2
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-        - name: Install build tools
-          run: sudo apt-ger install -y build-essential
+    steps:
+      - name: Chekout code
+      uses: actions/checkout@v2
 
-        - name: Build
-          run: make
+      - name: Install build tools
+      run: sudo apt-ger install -y build-essential
 
-        - name: Run the executable
-          run: ./program
+      - name: Build
+      run: make
+
+      - name: Run the executable
+      run: ./program
