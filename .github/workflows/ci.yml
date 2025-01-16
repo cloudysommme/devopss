@@ -1,31 +1,23 @@
-name: Build and Test C++ Project
+name: Makefile CI
 
 on:
   push:
-    branches:
-      - main
-      - branchAutoTest
+    branches: [ "branchMake" ]
   pull_request:
-    branches:
-      - main
-      - branchAutoTest
+    branches: [ "branchMake " ]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Chekout code
+          uses: actions/checkout@v2
 
-      - name: Set up C++ environment
-        run: sudo apt-get install g++ make automake autoconf debhelper libgtest-dev
+        - name: Install build tools
+          run: sudo apt-ger install -y build-essential
 
-      - name: Build the project using automake
-        run: |
-          ./autogen.sh
-          ./configure
-          make
+        - name: Build
+          run: make
 
-      - name: Run unit tests
-        run: |
-          make check
+        - name: Run the executable
+          run: ./program
