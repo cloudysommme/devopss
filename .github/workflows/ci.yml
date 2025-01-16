@@ -13,13 +13,13 @@ jobs:
 
     steps:
       - name: Chekout code
-      uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Install build tools
-      run: sudo apt-ger install -y build-essential
+        run: sudo apt-get install -y build-essential
 
       - name: Build
-      run: make
+        run: make
 
       - name: Run the executable
-      run: ./program
+        run: ./program
