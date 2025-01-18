@@ -1,4 +1,4 @@
-#include "func.h"
+#include "funcA.h"
 
 double HyperbolicTangent::FuncA(double x) {
     double result = 0;
