@@ -1,4 +1,4 @@
-#include "func.h"
+#include "funcA.h"
 #include <cmath>
 
 double HyperbolicTangent::FuncA(double x, int n) {
