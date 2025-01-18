@@ -1,5 +1,5 @@
 #include <iostream>
-#include "funcA.h"
+#include "func.h"
 
 int main() {
     HyperbolicTangent ht;
