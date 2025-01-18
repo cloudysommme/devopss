@@ -1,4 +1,4 @@
-#include "funcA.h"
+#include "func.h"
 #include <cmath>
 
 
