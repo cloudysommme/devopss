@@ -3,10 +3,10 @@ name: CI for Unit Tests
 on:
   push:
     branches:
-      - branchAutoTest
+      - branchAutoTest2
   pull_request:
     branches:
-      - branchAutoTest
+      - branchAutoTest2
 
 jobs:
   build:
