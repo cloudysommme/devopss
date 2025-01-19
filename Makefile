@@ -7,10 +7,10 @@ EXEC = main
 all: $(EXEC)
 
 $(EXEC): $(OBJECTS)
-    $(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(EXEC) $(OBJECTS)
 
 .cpp.o:
-    $(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 clean:
-    rm -f $(OBJECTS) $(EXEC)
+	rm -f $(OBJECTS) $(EXEC)
