@@ -1,0 +1,65 @@
+name: Build, Test, and Create Tarball
+
+on:
+  push:
+    branches:
+      - branchMake
+      - branchAutomake
+  pull_request:
+    branches:
+      - branchMake
+      - branchAutomake
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential autoconf automake make g++
+
+      - name: Build and Test
+        run: |
+          make clean
+          make
+          ./main
+
+  create-tarball:
+    if: github.ref_name == 'branchAutomake'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential autoconf automake make g++
+
+      - name: Generate config scripts
+        run: |
+          aclocal
+          autoconf
+          automake --add-missing
+
+      - name: Configure and Build
+        run: |
+          ./configure
+          make
+          make check
+
+      - name: Create tarball distribution
+        run: make dist
+
+      - name: Upload tarball
+        uses: actions/upload-artifact@v3
+        with:
+          name: program-tarball
+          path: program-*.tar.gz
+
