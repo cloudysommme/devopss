@@ -13,14 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up C++
-        uses: actions/setup-cpp@v2
-        with:
-          compiler: gcc
-
+      
       - name: Install dependencies
         run: sudo apt-get install -y libgtest-dev cmake
 
