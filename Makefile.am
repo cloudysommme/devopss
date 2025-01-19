@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 bin_PROGRAMS = program test
 test+SOUURCES = test.cpp func.cpp
-program_SOURCES = main.cpp func.cpp func.h test.cpp
+program_SOURCES = main.cpp func.cpp func.h
 
 PACKAGE = devopss
 VERSION = 1.0
