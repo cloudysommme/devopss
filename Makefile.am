@@ -1,26 +1,21 @@
-AUTOMAKE_OPTIONS = foreign
-bin_PROGRAMS = program test
-test+SOUURCES = test.cpp func.cpp
-program_SOURCES = main.cpp func.cpp func.h
-
-PACKAGE = devopss
+AUTOMAKE_OPTIONS = foreign subdir-objects
+bin_PROGRAMS = myprogram
+myprogram_SOURCES = main.cpp func.cpp func.h
+check_PROGRAMS = test
+test_SOURCES = tests/test.cpp func.cpp
+PACKAGE = myprogram
 VERSION = 1.0
 PACKAGE_BUGREPORT = senyshyn.nazar@gmail.com
-
-CTRLF_DIR = $(CURDIR)/deb/DEBIAN
-CTRLF_NAME = $(CTRLF_DIR)/control
 
 .PHONY: deb debug
 
 deb:
-	mkdir -p $(CTRLF_DIR)
-	echo Package: $(PACKAGE) > $(CTRLF_NAME)
-	echo Version: $(VERSION) >> $(CTRLF_NAME)
-	echo Architecture: all >> $(CTRLF_NAME)
-	echo Maintainer: $(PACKAGE_BUGREPORT) >> $(CTRLF_NAME)
-	echo -n "Description:" >> $(CTRLF_NAME)
-	cat aztec.1 >> $(CTRLF_NAME)
-	make DESTDIR=$(CURDIR)/deb install
+	echo "Package: $(PACKAGE)" > deb/DEBIAN/control
+	echo "Version: $(VERSION)" >> deb/DEBIAN/control
+	echo "Architecture: all" >> deb/DEBIAN/control
+	echo "Maintainer: $(PACKAGE_BUGREPORT)" >> deb/DEBIAN/control
+	echo "Description: MyProgram does amazing things" >> deb/DEBIAN/control
+
 
 debug:
 	@echo "${PACKAGE}"
