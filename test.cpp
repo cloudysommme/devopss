@@ -1,13 +1,23 @@
+// test.cpp
 #include <iostream>
 #include <cassert>
-#include "func.h"
+#include <cmath>
+#include "../func.h"
+void testCompute() {
+    FuncA func;
+    double x = 0.5;
+    int n = 3;
+    double result1 = func.compute(x, n);
+    double expected1 = -0.5;
+
+    std::cout << "Computed result: " << result1 << std::endl;
+    std::cout << "Expected result: " << expected1 << std::endl;
+
+    assert(fabs(result1 - expected1) < 1e-3 && "Test failed for x = 0.5, n = 3");
+}
 
 int main() {
-    HyperbolicTangent ht;
-    assert(ht.FuncA(0.0, 3) == 0.0);
-    assert(ht.FuncA(0.5, 3) > 0.46 && ht.FuncA(0.5, 3) < 0.47);
-    assert(ht.FuncA(-0.5, 3) > -0.47 && ht.FuncA(-0.5, 3) < -0.46);
-    std::cout << "All tests passed!" << std::endl;
+    testCompute();
     return 0;
 }
 

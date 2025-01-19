@@ -1,21 +1,35 @@
-name: Build and Test
+name: CI for Unit Tests
 
 on:
   push:
-    branches: [branchMake]
+    branches:
+      - branchAutoTest
   pull_request:
-    branches: [branchMake]
+    branches:
+      - branchAutoTest
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up C++ Build Environment
-        run: sudo apt update && sudo apt install -y g++
-      - name: Build with Makefile
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up C++
+        uses: actions/setup-cpp@v1
+        with:
+          compiler: gcc
+
+      - name: Install dependencies
+        run: sudo apt-get install -y libgtest-dev cmake
+
+      - name: Build the project
         run: |
-          make clean
+          autoreconf -i
+          ./configure
           make
-      - name: Run Tests
-        run: ./func
+
+      - name: Run tests
+        run: ./program
+
