@@ -102,7 +102,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_myprogram_OBJECTS = main.$(OBJEXT) func.$(OBJEXT)
+am_myprogram_OBJECTS = main.$(OBJEXT) func.$(OBJEXT) \
+	HTTP_Server.$(OBJEXT)
 myprogram_OBJECTS = $(am_myprogram_OBJECTS)
 myprogram_LDADD = $(LDADD)
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -124,8 +125,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/func.Po ./$(DEPDIR)/main.Po \
-	tests/$(DEPDIR)/test.Po
+am__depfiles_remade = ./$(DEPDIR)/HTTP_Server.Po ./$(DEPDIR)/func.Po \
+	./$(DEPDIR)/main.Po tests/$(DEPDIR)/test.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -296,7 +297,7 @@ top_build_prefix =
 top_builddir = .
 top_srcdir = .
 AUTOMAKE_OPTIONS = foreign subdir-objects
-myprogram_SOURCES = main.cpp func.cpp func.h
+myprogram_SOURCES = main.cpp func.cpp func.h HTTP_Server.cpp 
 test_SOURCES = tests/test.cpp func.cpp
 all: all-am
 
@@ -404,6 +405,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/HTTP_Server.Po # am--include-marker
 include ./$(DEPDIR)/func.Po # am--include-marker
 include ./$(DEPDIR)/main.Po # am--include-marker
 include tests/$(DEPDIR)/test.Po # am--include-marker
@@ -707,7 +709,8 @@ clean-am: clean-binPROGRAMS clean-checkPROGRAMS clean-generic \
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f ./$(DEPDIR)/func.Po
+		-rm -f ./$(DEPDIR)/HTTP_Server.Po
+	-rm -f ./$(DEPDIR)/func.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f tests/$(DEPDIR)/test.Po
 	-rm -f Makefile
@@ -757,7 +760,8 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f ./$(DEPDIR)/func.Po
+		-rm -f ./$(DEPDIR)/HTTP_Server.Po
+	-rm -f ./$(DEPDIR)/func.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f tests/$(DEPDIR)/test.Po
 	-rm -f Makefile
