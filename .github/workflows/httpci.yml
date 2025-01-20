@@ -1,0 +1,53 @@
+name: CI for Unit and Server Tests
+
+on:
+  push:
+    branches:
+      - branchHTTPserver
+  pull_request:
+    branches:
+      - branchHTTPserver
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up C++
+        uses: actions/setup-cpp@v1
+        with:
+          compiler: gcc
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential autoconf automake libtool g++ curl
+
+      - name: Build the project
+        run: |
+          autoreconf -i
+          ./configure
+          make
+
+      - name: Run Unit Tests
+        run: make check
+
+      - name: Start HTTP Server
+        run: |
+          ./myprogram server &
+          echo $! > server_pid.txt
+          sleep 5
+
+      - name: Run Server Tests
+        run: |
+          curl -i -X GET 127.0.0.1:8081/compute
+          curl -i -X GET 127.0.0.1:8081
+          curl -i -X GET 127.0.0.1:8081/nonexistent
+
+      - name: Stop HTTP Server
+        run: |
+          kill $(cat server_pid.txt)
+
