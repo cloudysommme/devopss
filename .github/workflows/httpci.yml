@@ -13,13 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+  
       - name: Set up C++
-        uses: actions/setup-cpp@v1
-        with:
-          compiler: gcc
+        run: sudo apt update && sudo apt install -y g++
 
       - name: Install dependencies
         run: |
