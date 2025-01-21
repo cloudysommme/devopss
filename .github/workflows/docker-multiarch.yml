@@ -44,8 +44,8 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/my-http-server:latest
-            ${{ secrets.DOCKER_USERNAME }}/my-http-server:${{ github.sha }}
+            ${{ vars.DOCKER_USERNAME }}/my-http-server:latest
+            ${{ vars.DOCKER_USERNAME }}/my-http-server:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
 
 
