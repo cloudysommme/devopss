@@ -1,4 +1,4 @@
-name: Build and Push Multi-Architecture Docker Image
+name: Build and Push Multiarch Docker Image
 
 on:
   push:
@@ -6,17 +6,12 @@ on:
       - branchHTTPserver
 
 jobs:
-  build-and-push:
-    name: Build and Push Docker Image
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-        with:
-          platforms: all
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -27,11 +22,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3
         with:
-          context: .
-          platforms: linux/amd64,linux/arm64
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: cloudysommme/my-http-server:latest
 
