@@ -1,0 +1,50 @@
+name: CI for Dockerfile Verification
+
+on:
+  push:
+    branches:
+      - main
+      - branchHTTPserver
+  pull_request:
+    branches:
+      - main
+      - branchHTTPserver
+
+jobs:
+  build-and-verify-dockerfile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+
+      - name: Check Dockerfile existence
+        run: |
+          if [ ! -f Dockerfile ]; then
+            echo "Dockerfile is missing!"
+            exit 1
+          fi
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-http-server .
+
+      - name: Test Docker container
+        run: |
+          docker run --rm -d -p 8081:8081 --name my-http-server-test my-http-server
+          sleep 5
+          curl -i -X GET http://127.0.0.1:8081/compute || exit 1
+          docker stop my-http-server-test
+
+      - name: Push Docker image to Docker Hub
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker tag my-http-server cloudysommme/my-http-server:latest
+          docker push cloudysommme/my-http-server:latest
+

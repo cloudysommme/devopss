@@ -243,11 +243,6 @@ PACKAGE_TARNAME = devopss
 PACKAGE_URL = 
 PACKAGE_VERSION = 1.0
 PATH_SEPARATOR = :
-PKG_CONFIG = /usr/bin/pkg-config
-PKG_CONFIG_LIBDIR = 
-PKG_CONFIG_PATH = 
-PROGRAM_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
-PROGRAM_LIBS = -lglib-2.0
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = 
@@ -803,7 +798,7 @@ uninstall-am: uninstall-binPROGRAMS
 .PRECIOUS: Makefile
 
 
-.PHONY: deb debug
+.PHONY: deb debug dockerfile dockerbuild dockerpush
 
 deb:
 	echo "Package: $(PACKAGE)" > deb/DEBIAN/control
@@ -819,6 +814,21 @@ debug:
 
 check: test
 	@./test
+
+dockerfile:
+	@echo "FROM alpine" > Dockerfile
+	@echo "WORKDIR /home" >> Dockerfile
+	@echo "COPY ./myprogram ." >> Dockerfile
+	@echo "RUN apk add libstdc++" >> Dockerfile
+	@echo "RUN apk add libc6-compat" >> Dockerfile
+	@echo 'ENTRYPOINT ["./myprogram"]' >> Dockerfile
+	@echo "Dockerfile has been generated."
+
+dockerbuild: dockerfile
+	sudo docker build -t cloudysommme/my-http-server:latest .
+
+dockerpush: dockerbuild
+	sudo docker push cloudysommme/my-http-server:latest
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
