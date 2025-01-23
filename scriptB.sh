@@ -1,13 +1,13 @@
 #!/bin/bash
 
-while true;
+NGINX_IP="127.0.0.1"  
+NGINX_PORT="80"       
 
-do
-
+while true; do
     sleep $((RANDOM % 6 + 5))
 
-    curl -i -X GET 127.0.0.1/compute > /dev/null 2>&1 &
+    curl -i -X GET "http://$NGINX_IP:$NGINX_PORT/compute" > /dev/null 2>&1 &
 
-    echo "HTTP request dispatched at $(date)"
-
+    echo "HTTP request dispatched to nginx at $(date)"
 done
+

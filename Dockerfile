@@ -1,6 +1,6 @@
 FROM alpine:latest AS builder
 
-RUN apk add --no-cache g++ make autoconf automake libtool
+RUN apk add --no-cache g++ make autoconf automake libtool libstdc++ libc6-compat curl
 
 WORKDIR /build
 RUN apk add --no-cache git && \
