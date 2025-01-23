@@ -2,29 +2,40 @@
 
 check_container_busy() {
     container=$1
-    # Get container CPU usage
     usage=$(docker stats --no-stream --format "{{.CPUPerc}}" "$container" 2>/dev/null | sed 's/%//')
+
     if [ -z "$usage" ]; then
         echo "idle"  # Container is idle
         return
     fi
+
     usage=${usage%%.*}  # Convert usage to an integer
-    if [ "$usage" -gt 80 ]; then
+    if [ "$usage" -gt 10 ]; then  # Adjust idle threshold as needed
         echo "busy"
     else
         echo "idle"
     fi
 }
 
+
 launch_container() {
     container=$1
     core=$2
+
     echo "Launching $container on CPU core $core"
-    docker run -d --cpuset-cpus="$core" -p 8081 --name "$container" cloudysommme/my-http-server
+    docker run -d --cpuset-cpus="$core" --name "$container" cloudysommme/my-http-server
+
     ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container")
+    if [ -z "$ip" ]; then
+        echo "Error: Failed to retrieve IP address for $container. Skipping NGINX update."
+        return 1
+    fi
+
     echo "Container $container launched with IP $ip"
     update_nginx_config "$container" "$ip"
 }
+
+
 
 
 terminate_container() {
@@ -38,18 +49,33 @@ terminate_container() {
 update_nginx_config() {
     container=$1
     ip=$2
+
+    if [ -z "$ip" ]; then
+        echo "Error: No IP address provided for $container. Skipping NGINX update."
+        return 1
+    fi
+
     echo "Adding $container with IP $ip to Nginx config"
-    sudo sed -i "/upstream app {/a\    server $ip:8081;" /etc/nginx/nginx.conf
-    sudo nginx -s reload
+    sudo sed -i "/upstream app {/a\\    server $ip:8081;" /etc/nginx/nginx.conf
+    sudo nginx -t && sudo nginx -s reload
 }
+
+
 
 remove_nginx_config() {
     container=$1
     ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container")
+
+    if [ -z "$ip" ]; then
+        echo "Error: No IP address found for $container"
+        return 1
+    fi
+
     echo "Removing $container with IP $ip from Nginx config"
     sudo sed -i "/server $ip:8081;/d" /etc/nginx/nginx.conf
-    sudo nginx -s reload
+    sudo nginx -t && sudo nginx -s reload
 }
+
 
 update_container() {
     container=$1
